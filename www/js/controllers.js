@@ -118,7 +118,7 @@ angular.module('conFusion.controllers', [])
 }])
 
 .controller('DishDetailController', ['$scope', '$stateParams', 'menuFactory', 'baseURL', function($scope, $stateParams, menuFactory, baseURL) {
-    
+
     $scope.baseURL = baseURL;
     $scope.dish = {};
     $scope.showDish = false;
@@ -178,8 +178,9 @@ menuFactory.getDishes().update({id:$scope.dish.id},$scope.dish);
 
 }])
 
-.controller('AboutController', ['$scope', 'corporateFactory', function($scope, corporateFactory) {
+.controller('AboutController', ['$scope', 'corporateFactory', 'baseURL', function($scope, corporateFactory, baseURL) {
 
+    $scope.baseURL = baseURL;
     $scope.leaders = corporateFactory.query();
     console.log($scope.leaders);
 
