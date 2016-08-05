@@ -25,7 +25,7 @@ angular.module('conFusion', ['ionic', 'conFusion.controllers', 'conFusion.servic
 .config(function($stateProvider, $urlRouterProvider) {
   $stateProvider
 
-    .state('app', {
+  .state('app', {
     url: '/app',
     abstract: true,
     templateUrl: 'templates/sidebar.html',
@@ -50,18 +50,28 @@ angular.module('conFusion', ['ionic', 'conFusion.controllers', 'conFusion.servic
           controller: 'AboutController'
         }
       }
-    })
+  })
 
-    .state('app.contactus', {
+  .state('app.contactus', {
       url: '/contactus',
       views: {
         'mainContent': {
           templateUrl: 'templates/contactus.html'
         }
       }
-    })
+  })
 
-    .state('app.menu', {
+  .state('app.favorites', {
+      url: '/favorites',
+      views: {
+        'mainContent': {
+          templateUrl: 'templates/favorites.html',
+            controller:'FavoritesController'
+        }
+      }
+  })
+
+  .state('app.menu', {
       url: '/menu',
       views: {
         'mainContent': {
@@ -69,7 +79,7 @@ angular.module('conFusion', ['ionic', 'conFusion.controllers', 'conFusion.servic
           controller: 'MenuController'
         }
       }
-    })
+  })
 
   .state('app.dishdetails', {
     url: '/menu/:id',
