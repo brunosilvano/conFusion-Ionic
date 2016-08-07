@@ -147,7 +147,7 @@ angular.module('conFusion.controllers', [])
     };
 }])
 
-.controller('DishDetailController', ['$scope', '$stateParams', 'menuFactory', 'baseURL', '$ionicPopover', 'favoriteFactory', function($scope, $stateParams, menuFactory, baseURL, $ionicPopover, favoriteFactory) {
+.controller('DishDetailController', ['$scope', '$stateParams', 'menuFactory', 'baseURL', '$ionicPopover', 'favoriteFactory', '$ionicModal', function($scope, $stateParams, menuFactory, baseURL, $ionicPopover, favoriteFactory, $ionicModal) {
 
     $scope.baseURL = baseURL;
     $scope.dish = {};
@@ -164,7 +164,7 @@ angular.module('conFusion.controllers', [])
                         $scope.message = "Error: "+response.status + " " + response.statusText;
                     }
     );
-
+    // Options Popover
     $ionicPopover.fromTemplateUrl('templates/dish-detail-popover.html', {
         scope: $scope
     }).then(function(popover) {
@@ -179,10 +179,25 @@ angular.module('conFusion.controllers', [])
     $scope.addFavorite = function(index) {
         console.log("Index is " + index);
         favoriteFactory.addToFavorites(index);
+        $scope.popover.hide();
     };
-}])
+    // Comment modal
+    $ionicModal.fromTemplateUrl('templates/dish-comment.html', {
+        scope: $scope
+    }).then(function(modal) {
+        $scope.modal = modal;
+    });
 
-.controller('DishCommentController', ['$scope', 'menuFactory', function($scope,menuFactory) {
+    $scope.addComment = function() {
+        $scope.modal.show();
+    };
+
+    $scope.closeModal = function() {
+        $scope.modal.hide();
+    }
+// }])
+
+// .controller('DishCommentController', ['$scope', 'menuFactory', function($scope,menuFactory) {
     
     $scope.mycomment = {rating:5, comment:"", author:"", date:""};
     
@@ -194,8 +209,9 @@ angular.module('conFusion.controllers', [])
         $scope.dish.comments.push($scope.mycomment);
 menuFactory.getDishes().update({id:$scope.dish.id},$scope.dish);
         
-        $scope.commentForm.$setPristine();
-        
+        // $scope.commentForm.$setPristine();
+        $scope.popover.hide();
+        $scope.closeModal();
         $scope.mycomment = {rating:5, comment:"", author:"", date:""};
     }
 }])
