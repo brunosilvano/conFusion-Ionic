@@ -1,6 +1,6 @@
 angular.module('conFusion.controllers', [])
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout, $localStorage, $ionicPlatform, $cordovaCamera) {
+.controller('AppCtrl', function($scope, $ionicModal, $timeout, $localStorage, $ionicPlatform, $cordovaCamera, $cordovaImagePicker) {
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -92,19 +92,27 @@ angular.module('conFusion.controllers', [])
     };
 
     $ionicPlatform.ready(function() {
-        var options = {
+        var takePictureOptions = {
             quality: 50,
             destinationType: Camera.DestinationType.DATA_URL,
             sourceType: Camera.PictureSourceType.CAMERA,
-            allowEdit: true,
+            allowEdit: false,
             encodingType: Camera.EncodingType.JPEG,
             targetWidth: 100,
             targetHeight: 100,
             popoverOptions: CameraPopoverOptions,
             saveToPhotoAlbum: false
         };
-         $scope.takePicture = function() {
-            $cordovaCamera.getPicture(options).then(function(imageData) {
+
+        var selectFromGalleryOptions = {
+            maximumImagesCount: 1,
+            width: 100,
+            height: 100,
+            quality: 50
+        };
+
+        $scope.takePicture = function() {
+            $cordovaCamera.getPicture(takePictureOptions).then(function(imageData) {
                 $scope.registration.imgSrc = "data:image/jpeg;base64," + imageData;
             }, function(err) {
                 console.log(err);
@@ -112,6 +120,17 @@ angular.module('conFusion.controllers', [])
 
             $scope.registerform.show();
 
+        };
+
+        $scope.selectFromGallery = function() {
+            $cordovaImagePicker.getPictures(selectFromGalleryOptions)
+            .then(function(results) {
+                $scope.registration.imgSrc = results[0];
+            }, function(err) {
+                console.log(err);
+            });
+
+            $scope.registerform.show();
         };
     });
 })
